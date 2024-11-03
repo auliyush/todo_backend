@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface ToDoService {
 
-    ToDo createToDo(ToDoCreateRequest toDoCreateRequest);
+    Boolean createToDo(ToDoCreateRequest toDoCreateRequest);
 
     List<ToDo> getAllTodoByUserId(String userId);
 
     boolean completeTodo(String userId, String todoId);
 
-    boolean deleteTodo(String todoId, String userId);
+    boolean deleteTodo(String userId, String todoId);
+
+    List<ToDo> getAllInCompleteToDo(String userId);
 }

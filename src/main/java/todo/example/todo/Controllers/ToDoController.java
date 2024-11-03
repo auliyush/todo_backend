@@ -17,10 +17,13 @@ public class ToDoController {
     private ToDoService toDoService;
 
     @PostMapping("/create")
-    public ToDo createToDo(@RequestBody ToDoCreateRequest toDoCreateRequest) {
+    public Boolean createToDo(@RequestBody ToDoCreateRequest toDoCreateRequest) {
         return toDoService.createToDo(toDoCreateRequest);
     }
-
+    @GetMapping("/get/all/incomplete/toDo")
+    public List<ToDo> getAllInCompleteToDo(@RequestParam String userId){
+        return toDoService.getAllInCompleteToDo(userId);
+    }
     @GetMapping("/get/all/by/userId")
     public List<ToDo> getAllTodoByUserId(@RequestParam String userId) {
         return toDoService.getAllTodoByUserId(userId);
@@ -32,7 +35,7 @@ public class ToDoController {
     }
 
     @PutMapping("/remove")
-    public boolean deleteTodo(@RequestParam String todoId, String userId) {
-        return toDoService.deleteTodo(todoId, userId);
+    public boolean deleteTodo(@RequestParam String userId, String todoId) {
+        return toDoService.deleteTodo(userId, todoId);
     }
 }

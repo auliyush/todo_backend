@@ -21,21 +21,23 @@ public class ToDoServiceImpl implements ToDoService {
     private UserService userService;
 
     @Override
-    public ToDo createToDo(ToDoCreateRequest toDoCreateRequest) {
+    public Boolean createToDo(ToDoCreateRequest toDoCreateRequest) {
         User user = userService.getUserById(toDoCreateRequest.getUserId());
         if (user != null) {
             for (ToDo todo : getAllTodoByUserId(user.getUserId())) {
                 if (todo.getTodo().equals(toDoCreateRequest.getTodo())) {
-                    return null;
+                    return false;
                 }
             }
             ToDo toDo = new ToDo();
             toDo.setUserId(toDoCreateRequest.getUserId());
             toDo.setTodo(toDoCreateRequest.getTodo());
             toDo.setActive(true);
-            return toDoRepository.save(toDo);
+            toDo.setComplete(false);
+            toDoRepository.save(toDo);
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -43,7 +45,17 @@ public class ToDoServiceImpl implements ToDoService {
     public List<ToDo> getAllTodoByUserId(String userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
-            return toDoRepository.findAllByUserId(userId);
+            return toDoRepository.findAllByUserIdAndIsActive(userId,true);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<ToDo> getAllInCompleteToDo(String userId) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            return toDoRepository.findAllByUserIdAndIsComplete(userId,false);
         } else {
             return null;
         }
@@ -67,7 +79,7 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public boolean deleteTodo(String todoId, String userId) {
+    public boolean deleteTodo(String userId, String todoId) {
         User user = userService.getUserById(userId);
         if (user != null) {
             ToDo toDo = toDoRepository.findByTodoId(todoId);

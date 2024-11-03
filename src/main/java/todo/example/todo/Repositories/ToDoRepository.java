@@ -11,6 +11,9 @@ public interface ToDoRepository extends MongoRepository<ToDo, String> {
 
     List<ToDo> findAllByUserId(String userId);
 
-
     ToDo findByTodoId(String todoId);
+
+    List<ToDo> findAllByUserIdAndIsComplete(String userId, boolean completeStatus);
+
+    List<ToDo> findAllByUserIdAndIsActive(String userId, boolean activeStatus);
 }

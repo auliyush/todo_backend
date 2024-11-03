@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Document(collection = "loginUsers")
 public class LoginResponse {
-    private String userId;
+    private String loginId;
     private LocalDateTime dateTime;
 }
